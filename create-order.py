@@ -35,24 +35,33 @@ def on_open(ws):
     print("Connection established")
     
     timestamp = int(time.time()) * 1000
-
+    price = 0.0105
+    
     params = {
         "apiKey": api_key,
+        "newOrderRespType": "RESULT",
         "positionSide": "LONG",
-        "price": "0.0107042",
-        "quantity": 512,
-        "side": "BUY",
+        # "price": price,
+
+        "quantity": int(5.1 / price),
+        "side": "SELL",
         "symbol": "1000PEPEUSDC",
         "timeInForce": "GTC",
         "timestamp": timestamp,
-        "type": "LIMIT"
+        "type": "STOP_MARKET",
+        "stopPrice": price * 2
+        
     }
+
+    params = sorted(params.items())
+
+    params = {k: v for k, v in params}
 
     params['signature'] = hashing(urlencode(params))
 
     # 构建要发送的 JSON 数据
     payload = {
-        "id": timestamp,
+        "id": 'supoerman',
         "method": "order.place",
         "params": params,
     }
